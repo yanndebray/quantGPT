@@ -1,0 +1,80 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+      "title": "Get Stock Data",
+      "description": "Retrieves the latest stock price for a given symbol using Basic Authentication.",
+      "version": "v1.0.0"
+    },
+    "servers": [
+      {
+        "url": "https://quantgpt.onrender.com"
+      }
+    ],
+    "paths": {
+      "/stock": {
+        "get": {
+          "description": "Get the latest stock price for a specific symbol",
+          "operationId": "GetLatestStockPrice",
+          "parameters": [
+            {
+              "name": "symbol",
+              "in": "query",
+              "description": "The stock symbol to retrieve the price for",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "security": [
+            {
+              "basicAuth": []
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response with the latest stock price",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "symbol": {
+                        "type": "string"
+                      },
+                      "stock_price": {
+                        "type": "number",
+                        "format": "float"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized access due to invalid or missing API key"
+            },
+            "400": {
+              "description": "Bad request due to missing symbol parameter"
+            },
+            "404": {
+              "description": "No current price data available for the given symbol"
+            },
+            "500": {
+              "description": "Internal server error"
+            }
+          },
+          "deprecated": false
+        }
+      }
+    },
+    "components": {
+      "securitySchemes": {
+        "basicAuth": {
+          "type": "http",
+          "scheme": "basic"
+        }
+      },
+      "schemas": {}
+    }
+  }
