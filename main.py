@@ -1,11 +1,12 @@
 # https://mer.vin/2023/11/get-stock-price-with-basic-auth/
 from flask import Flask, request, Response
-import json
+import json, os
 import yfinance as yf
 
 app = Flask(__name__)
 
-API_KEY = "My_API_Key"  # Replace with your actual API key
+# API_KEY = "My_API_Key"  # Replace with your actual API key
+API_KEY = os.getenv("API_KEY")
 
 def validate_api_key(request):
     auth_header = request.headers.get('Authorization')
@@ -23,7 +24,12 @@ def validate_api_key(request):
 
 @app.route("/")
 def index():
-    return "Hello world!"
+    return f"""
+    Hello Quant! 
+    API_KEY = {API_KEY}
+    ---
+    Go to /stock?symbol=AAPL
+    """
 
 @app.route('/stock', methods=['GET'])
 def get_stock_data():
